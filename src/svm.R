@@ -13,7 +13,7 @@ labelData <- read.csv("Discussion_Category_Less5.csv", header=T, sep=',')
 #labelList <- labelList[]
 labelList <- as.list(as.data.frame(t(labelData)))
 integData <- cbind(csvData, labelData)
-trainingDataSize <- floor(0.60 * nrow(integData))
+trainingDataSize <- floor(0.70 * nrow(integData))
 set.seed(123)
 train_ind <- sample(seq_len(nrow(integData)), size = trainingDataSize)
 trainingData <- integData[train_ind, ]
@@ -52,62 +52,174 @@ accuracy = c()
 
 pred <- predict(linearModel,xtest)
 confusionMatrix <- table(pred,ytest)
-A <- confusionMatrix[1,1]
-B <- confusionMatrix[1,2]
-C <- confusionMatrix[2,1]
-D <- confusionMatrix[2,2]
-accuracy[1]= (A+D)/(A+B+C+D)
-precision[1] <- A/(A+B)
-recall[1] <- A/(A+C)
-FMeasure[1] <- (2 * ( precision[1] * recall[1])/ ( precision[1] + recall[1] ))
+A1 <- confusionMatrix[1,1]
+A2 <- confusionMatrix[1,2]
+A3 <- confusionMatrix[1,3]
+A4 <- confusionMatrix[1,4]
+A5 <- confusionMatrix[1,5]
+B1 <- confusionMatrix[2,1]
+B2 <- confusionMatrix[2,2]
+B3 <- confusionMatrix[2,3]
+B4 <- confusionMatrix[2,4]
+B5 <- confusionMatrix[2,5]
+C1 <- confusionMatrix[3,1]
+C2 <- confusionMatrix[3,2]
+C3 <- confusionMatrix[3,3]
+C4 <- confusionMatrix[3,4]
+C5 <- confusionMatrix[3,5]
+D1 <- confusionMatrix[4,1]
+D2 <- confusionMatrix[4,2]
+D3 <- confusionMatrix[4,3]
+D4 <- confusionMatrix[4,4]
+D5 <- confusionMatrix[4,5]
+E1 <- confusionMatrix[5,1]
+E2 <- confusionMatrix[5,2]
+E3 <- confusionMatrix[5,3]
+E4 <- confusionMatrix[5,4]
+E5 <- confusionMatrix[5,5]
+
+sumOfElements <- A1+A2+A3+A4+A5+B1+B2+B3+B4+B5+C1+C2+C3+C4+C5+D1+D2+D3+D4+D5+E1+E2+E3+E4+E5
+accuracy[1]= (A1+B2+C3+D4+E5)/sumOfElements
+#precision[1] <- A1/(A1+B1+C1+D1+E1)
+#recall[1] <- A1/(A1+A2+A3+A4+A5)
+#FMeasure[1] <- (2 * ( precision[1] * recall[1])/ ( precision[1] + recall[1] ))
 
 
-pred <- predict(polynomialModel,xtest)
-confusionMatrix <- table(pred,ytest)
-A <- confusionMatrix[1,1]
-B <- confusionMatrix[1,2]
-C <- confusionMatrix[2,1]
-D <- confusionMatrix[2,2]
-accuracy[2]= (A+D)/(A+B+C+D)
-precision[2] <- A/(A+B)
-recall[2] <- A/(A+C)
-FMeasure[2] <-  (2 * ( precision[1] * recall[1])/ ( precision[1] + recall[1] ))
+predLinear <- predict(polynomialModel,xtest)
+confusionMatrix <- table(predLinear,ytest)
+A1 <- confusionMatrix[1,1]
+A2 <- confusionMatrix[1,2]
+A3 <- confusionMatrix[1,3]
+A4 <- confusionMatrix[1,4]
+A5 <- confusionMatrix[1,5]
+B1 <- confusionMatrix[2,1]
+B2 <- confusionMatrix[2,2]
+B3 <- confusionMatrix[2,3]
+B4 <- confusionMatrix[2,4]
+B5 <- confusionMatrix[2,5]
+C1 <- confusionMatrix[3,1]
+C2 <- confusionMatrix[3,2]
+C3 <- confusionMatrix[3,3]
+C4 <- confusionMatrix[3,4]
+C5 <- confusionMatrix[3,5]
+D1 <- confusionMatrix[4,1]
+D2 <- confusionMatrix[4,2]
+D3 <- confusionMatrix[4,3]
+D4 <- confusionMatrix[4,4]
+D5 <- confusionMatrix[4,5]
+E1 <- confusionMatrix[5,1]
+E2 <- confusionMatrix[5,2]
+E3 <- confusionMatrix[5,3]
+E4 <- confusionMatrix[5,4]
+E5 <- confusionMatrix[5,5]
 
-pred <- predict(radialModel,xtest)
-confusionMatrix <- table(pred,ytest)
-A <- confusionMatrix[1,1]
-B <- confusionMatrix[1,2]
-C <- confusionMatrix[2,1]
-D <- confusionMatrix[2,2]
-accuracy[3]= (A+D)/(A+B+C+D)
-precision[3] <- A/(A+B)
-recall[3] <- A/(A+C)
-FMeasure[3] <-  (2 * ( precision[1] * recall[1])/ ( precision[1] + recall[1] ))
+sumOfElements <- A1+A2+A3+A4+A5+B1+B2+B3+B4+B5+C1+C2+C3+C4+C5+D1+D2+D3+D4+D5+E1+E2+E3+E4+E5
+accuracy[2]= (A1+B2+C3+D4+E5)/sumOfElements
+#precision[1] <- A1/(A1+B1+C1+D1+E1)
+#recall[1] <- A1/(A1+A2+A3+A4+A5)
+#FMeasure[1] <- (2 * ( precision[1] * recall[1])/ ( precision[1] + recall[1] ))
 
+predRadial <- predict(radialModel,xtest)
+confusionMatrix <- table(predRadial,ytest)
+A1 <- confusionMatrix[1,1]
+A2 <- confusionMatrix[1,2]
+A3 <- confusionMatrix[1,3]
+A4 <- confusionMatrix[1,4]
+A5 <- confusionMatrix[1,5]
+B1 <- confusionMatrix[2,1]
+B2 <- confusionMatrix[2,2]
+B3 <- confusionMatrix[2,3]
+B4 <- confusionMatrix[2,4]
+B5 <- confusionMatrix[2,5]
+C1 <- confusionMatrix[3,1]
+C2 <- confusionMatrix[3,2]
+C3 <- confusionMatrix[3,3]
+C4 <- confusionMatrix[3,4]
+C5 <- confusionMatrix[3,5]
+D1 <- confusionMatrix[4,1]
+D2 <- confusionMatrix[4,2]
+D3 <- confusionMatrix[4,3]
+D4 <- confusionMatrix[4,4]
+D5 <- confusionMatrix[4,5]
+E1 <- confusionMatrix[5,1]
+E2 <- confusionMatrix[5,2]
+E3 <- confusionMatrix[5,3]
+E4 <- confusionMatrix[5,4]
+E5 <- confusionMatrix[5,5]
 
-pred <- predict(sigmoidModel,xtest)
-confusionMatrix <- table(pred,ytest)
-A <- confusionMatrix[1,1]
-B <- confusionMatrix[1,2]
-C <- confusionMatrix[2,1]
-D <- confusionMatrix[2,2]
-accuracy[4]= (A+D)/(A+B+C+D)
-precision[4] <- A/(A+B)
-recall[4] <- A/(A+C)
-FMeasure[4] <-  (2 * ( precision[4] * recall[4])/ ( precision[4] + recall[4] ))
+sumOfElements <- A1+A2+A3+A4+A5+B1+B2+B3+B4+B5+C1+C2+C3+C4+C5+D1+D2+D3+D4+D5+E1+E2+E3+E4+E5
+accuracy[3]= (A1+B2+C3+D4+E5)/sumOfElements
+#precision[1] <- A1/(A1+B1+C1+D1+E1)
+#recall[1] <- A1/(A1+A2+A3+A4+A5)
+#FMeasure[1] <- (2 * ( precision[1] * recall[1])/ ( precision[1] + recall[1] ))
 
+predSigmoid <- predict(sigmoidModel,xtest)
+confusionMatrix <- table(predSigmoid,ytest)
+A1 <- confusionMatrix[1,1]
+A2 <- confusionMatrix[1,2]
+A3 <- confusionMatrix[1,3]
+A4 <- confusionMatrix[1,4]
+A5 <- confusionMatrix[1,5]
+B1 <- confusionMatrix[2,1]
+B2 <- confusionMatrix[2,2]
+B3 <- confusionMatrix[2,3]
+B4 <- confusionMatrix[2,4]
+B5 <- confusionMatrix[2,5]
+C1 <- confusionMatrix[3,1]
+C2 <- confusionMatrix[3,2]
+C3 <- confusionMatrix[3,3]
+C4 <- confusionMatrix[3,4]
+C5 <- confusionMatrix[3,5]
+D1 <- confusionMatrix[4,1]
+D2 <- confusionMatrix[4,2]
+D3 <- confusionMatrix[4,3]
+D4 <- confusionMatrix[4,4]
+D5 <- confusionMatrix[4,5]
+E1 <- confusionMatrix[5,1]
+E2 <- confusionMatrix[5,2]
+E3 <- confusionMatrix[5,3]
+E4 <- confusionMatrix[5,4]
+E5 <- confusionMatrix[5,5]
 
-pred <- predict(quadraticModel,xtest)
-confusionMatrix <- table(pred,ytest)
-A <- confusionMatrix[1,1]
-B <- confusionMatrix[1,2]
-C <- confusionMatrix[2,1]
-D <- confusionMatrix[2,2]
-accuracy[5]= (A+D)/(A+B+C+D)
-precision[5] <- A/(A+B)
-recall[5] <- A/(A+C)
-FMeasure[5] <-  (2 * ( precision[5] * recall[5])/ ( precision[5] + recall[5] ))
+sumOfElements <- A1+A2+A3+A4+A5+B1+B2+B3+B4+B5+C1+C2+C3+C4+C5+D1+D2+D3+D4+D5+E1+E2+E3+E4+E5
+accuracy[4]= (A1+B2+C3+D4+E5)/sumOfElements
+#precision[1] <- A1/(A1+B1+C1+D1+E1)
+#recall[1] <- A1/(A1+A2+A3+A4+A5)
+#FMeasure[1] <- (2 * ( precision[1] * recall[1])/ ( precision[1] + recall[1] ))
 
-resultTable = data.frame(methods,accuracy,precision,recall,FMeasure)
+predQuadratic <- predict(quadraticModel,xtest)
+confusionMatrix <- table(predQuadratic,ytest)
+A1 <- confusionMatrix[1,1]
+A2 <- confusionMatrix[1,2]
+A3 <- confusionMatrix[1,3]
+A4 <- confusionMatrix[1,4]
+A5 <- confusionMatrix[1,5]
+B1 <- confusionMatrix[2,1]
+B2 <- confusionMatrix[2,2]
+B3 <- confusionMatrix[2,3]
+B4 <- confusionMatrix[2,4]
+B5 <- confusionMatrix[2,5]
+C1 <- confusionMatrix[3,1]
+C2 <- confusionMatrix[3,2]
+C3 <- confusionMatrix[3,3]
+C4 <- confusionMatrix[3,4]
+C5 <- confusionMatrix[3,5]
+D1 <- confusionMatrix[4,1]
+D2 <- confusionMatrix[4,2]
+D3 <- confusionMatrix[4,3]
+D4 <- confusionMatrix[4,4]
+D5 <- confusionMatrix[4,5]
+E1 <- confusionMatrix[5,1]
+E2 <- confusionMatrix[5,2]
+E3 <- confusionMatrix[5,3]
+E4 <- confusionMatrix[5,4]
+E5 <- confusionMatrix[5,5]
+
+sumOfElements <- A1+A2+A3+A4+A5+B1+B2+B3+B4+B5+C1+C2+C3+C4+C5+D1+D2+D3+D4+D5+E1+E2+E3+E4+E5
+accuracy[5]= (A1+B2+C3+D4+E5)/sumOfElements
+#precision[1] <- A1/(A1+B1+C1+D1+E1)
+#recall[1] <- A1/(A1+A2+A3+A4+A5)
+#FMeasure[1] <- (2 * ( precision[1] * recall[1])/ ( precision[1] + recall[1] ))
+resultTable = data.frame(methods,accuracy)
 
 print(resultTable)
