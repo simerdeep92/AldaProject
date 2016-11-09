@@ -6,7 +6,7 @@ library("klaR")
 csvData <- read.csv("output.csv", header=T, sep=',')
 
 #labelData <- file.choose()
-labelData <- read.csv("Discussion_Category_Less5.csv", header=T, sep=',')
+labelData <- read.csv("Discussion_Category_Less5_2.csv", header=T, sep=',')
 
 #labelList <- labelData[,c("Discussion.Category")]
 #dim(labelData)
@@ -97,9 +97,11 @@ E5 <- confusionMatrix[5,5]
 
 sumOfElements <- A1+A2+A3+A4+A5+B1+B2+B3+B4+B5+C1+C2+C3+C4+C5+D1+D2+D3+D4+D5+E1+E2+E3+E4+E5
 accuracy = (A1+B2+C3+D4+E5)/sumOfElements
+
 #precision[1] <- A1/(A1+B1+C1+D1+E1)
 #recall[1] <- A1/(A1+A2+A3+A4+A5)
 #FMeasure[1] <- (2 * ( precision[1] * recall[1])/ ( precision[1] + recall[1] ))
 resultTable = data.frame(method,accuracy)
 
 print(resultTable)
+
