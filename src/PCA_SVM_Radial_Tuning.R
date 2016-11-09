@@ -98,3 +98,4 @@ for(c in seq(from=-3, to=27, by=0.5)){
 }
 print(maxC)
 print(maxG)
+write.csv(confusionMatrix, file="CM_Radial.csv")
