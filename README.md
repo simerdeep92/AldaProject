@@ -1,2 +1,2 @@
-# TwitterClassification
-Classifications of Tweets
+# MOOC topical classification
+Classifications of comments in MOOC discussion forums
