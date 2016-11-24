@@ -19,8 +19,10 @@ set.seed(123)
 train_ind <- sample(seq_len(nrow(integData)), size = trainingDataSize)
 trainingData <- integData[train_ind, ]
 testData <- integData[-train_ind, ]
-xtrain = trainingData[,1:4023]
-ytrain = trainingData[,4024]
+
+numOfCols <- ncol(csvData)
+xtrain = trainingData[,1:numOfCols]
+ytrain = trainingData[,numOfCols+1]
 ytrain <- as.factor(ytrain)
 
 ###########PCA#######

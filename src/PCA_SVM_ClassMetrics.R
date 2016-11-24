@@ -5,7 +5,7 @@ library(gridExtra)
 library(grid)
 
 #csvData <- file.choose()
-csvData <- read.csv("output.csv", header=T, sep=',')
+csvData <- read.csv("output_tfidf.csv", header=T, sep=',')
 
 #labelData <- file.choose()
 labelData <- read.csv("Discussion_Category_Less5_2.csv", header=T, sep=',')
