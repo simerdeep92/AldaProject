@@ -5,15 +5,11 @@ library(gridExtra)
 library(grid)
 
 #csvData <- file.choose()
-csvData <- read.csv("output.csv", header=T, sep=',')
+csvData <- read.csv("output_tfidf.csv", header=T, sep=',')
 
 #labelData <- file.choose()
 labelData <- read.csv("Discussion_Category_Less5_2.csv", header=T, sep=',')
 
-#labelList <- labelData[,c("Discussion.Category")]
-#dim(labelData)
-#dim(csvData)
-#labelList <- labelList[]
 labelList <- as.list(as.data.frame(t(labelData)))
 integData <- cbind(csvData, labelData)
 trainingDataSize <- floor(0.70 * nrow(integData))
@@ -21,58 +17,57 @@ set.seed(123)
 train_ind <- sample(seq_len(nrow(integData)), size = trainingDataSize)
 trainingData <- integData[train_ind, ]
 testData <- integData[-train_ind, ]
-xtrain = trainingData[,1:4023]
-ytrain = trainingData[,4024]
+
+numOfCols <- ncol(csvData)
+xtrain = trainingData[,1:numOfCols]
+ytrain = trainingData[,numOfCols+1]
 
 ###########PCA#######
 #xtrainT <- t(xtrain)
 #p <- prcomp(xtrain, retx=TRUE, center=TRUE, scale=TRUE)
 p <- prcomp(xtrain)
-pRot <- (p$rotation[,1:31])
+
+# Choosing 6 dimesions after experimenting in PCA_SVM_ClassMetrics_Test.R
+i <- 6
+pRot <- (p$rotation[,1:i])
 
 xtrainMat <- data.matrix(xtrain)
 xtrainMult <- xtrainMat %*% pRot
 
 #print(summary(p))
-
 #plot(p, type = "l")
 
-##########PCA in caret##########
-# trans = preProcess(xtrain,
-#                      method=c("BoxCox", "center",
-#                               "scale", "pca"))
-
-xtest = testData[,1:4023]
-ytest = testData[,4024]
+xtest = testData[,1:numOfCols]
+ytest = testData[,numOfCols+1]
 
 ##########PCA##########
 #xtestT <- t(xtest)
 pTest <- prcomp(xtest)
 #print(summary(p2))
-pRotTest <- (pTest$rotation[,1:31])
+pRotTest <- (pTest$rotation[,1:i])
 
 xtestMat <- data.matrix(xtest)
 xtestMult <- xtestMat %*% pRotTest
 
 tuneLinear = best.tune(svm,train.x=xtrainMult, train.y=ytrain,kernel ="linear")
 #print(summary(tuneLinear))
-linearModel <- svm( xtrainMult, ytrain, kernel = "linear", type = 'C', cost = 1, gamma = 0.03225806)
+linearModel <- svm( xtrainMult, ytrain, kernel = "linear", type = 'C', cost = 1, gamma = 0.02)
 
 tunePolynomial = best.tune(svm,train.x=xtrainMult, train.y=ytrain,kernel ="polynomial")
 #print(summary(tunePolynomial))
-polynomialModel <- svm( xtrainMult, ytrain, kernel = "polynomial", type = 'C', degree = 3, cost = 1, gamma = 0.03225806)
+polynomialModel <- svm( xtrainMult, ytrain, kernel = "polynomial", type = 'C', degree = 3, cost = 1, gamma = 0.02)
 
 tuneRadial = best.tune(svm,train.x=xtrainMult, train.y=ytrain,kernel ="radial")
 #print(summary(tuneRadial))
-radialModel <- svm( xtrainMult, ytrain, kernel = "radial", type = 'C', cost = 1, gamma = 0.03225806)
+radialModel <- svm( xtrainMult, ytrain, kernel = "radial", type = 'C', cost = 1, gamma = 0.02)
 
 tuneSigmoid = best.tune(svm,train.x=xtrainMult, train.y=ytrain,kernel ="sigmoid")
 #print(summary(tuneSigmoid))
-sigmoidModel <- svm( xtrainMult, ytrain, kernel = "sigmoid", type = 'C', cost = 1, gamma = 0.03225806)
+sigmoidModel <- svm( xtrainMult, ytrain, kernel = "sigmoid", type = 'C', cost = 1, gamma = 0.02)
 
 tuneQuadratic = best.tune(svm,train.x=xtrainMult, train.y=ytrain,kernel ="polynomial")
 #print(summary(tuneQuadratic))
-quadraticModel <- svm( xtrainMult, ytrain, kernel = "polynomial", type = 'C', degree = 3, cost = 1, gamma = 0.03225806)
+quadraticModel <- svm( xtrainMult, ytrain, kernel = "polynomial", type = 'C', degree = 3, cost = 1, gamma = 0.02)
 
 methods = c("linear","polynomial","radial","sigmoid","quadratic");
 
@@ -111,7 +106,7 @@ E2 <- confusionMatrix[5,2]
 E3 <- confusionMatrix[5,3]
 E4 <- confusionMatrix[5,4]
 E5 <- confusionMatrix[5,5]
-grid.table(confusionMatrix)
+# grid.table(confusionMatrix)
 sumOfElements <- A1+A2+A3+A4+A5+B1+B2+B3+B4+B5+C1+C2+C3+C4+C5+D1+D2+D3+D4+D5+E1+E2+E3+E4+E5
 accuracy[1]= (A1+B2+C3+D4+E5)/sumOfElements
 classAccuracy[1,1] = A1/sumOfElements
@@ -163,8 +158,8 @@ E2 <- confusionMatrix[5,2]
 E3 <- confusionMatrix[5,3]
 E4 <- confusionMatrix[5,4]
 E5 <- confusionMatrix[5,5]
-dev.off()
-grid.table(confusionMatrix)
+# dev.off()
+# grid.table(confusionMatrix)
 sumOfElements <- A1+A2+A3+A4+A5+B1+B2+B3+B4+B5+C1+C2+C3+C4+C5+D1+D2+D3+D4+D5+E1+E2+E3+E4+E5
 accuracy[2]= (A1+B2+C3+D4+E5)/sumOfElements
 classAccuracy[2,1] = A1/sumOfElements
@@ -215,8 +210,8 @@ E2 <- confusionMatrix[5,2]
 E3 <- confusionMatrix[5,3]
 E4 <- confusionMatrix[5,4]
 E5 <- confusionMatrix[5,5]
-dev.off()
-grid.table(confusionMatrix)
+# dev.off()
+# grid.table(confusionMatrix)
 sumOfElements <- A1+A2+A3+A4+A5+B1+B2+B3+B4+B5+C1+C2+C3+C4+C5+D1+D2+D3+D4+D5+E1+E2+E3+E4+E5
 accuracy[3]= (A1+B2+C3+D4+E5)/sumOfElements
 classAccuracy[3,1] = A1/sumOfElements
@@ -267,8 +262,8 @@ E2 <- confusionMatrix[5,2]
 E3 <- confusionMatrix[5,3]
 E4 <- confusionMatrix[5,4]
 E5 <- confusionMatrix[5,5]
-dev.off()
-grid.table(confusionMatrix)
+# dev.off()
+# grid.table(confusionMatrix)
 sumOfElements <- A1+A2+A3+A4+A5+B1+B2+B3+B4+B5+C1+C2+C3+C4+C5+D1+D2+D3+D4+D5+E1+E2+E3+E4+E5
 accuracy[4]= (A1+B2+C3+D4+E5)/sumOfElements
 classAccuracy[4,1] = A1/sumOfElements
@@ -319,8 +314,8 @@ E2 <- confusionMatrix[5,2]
 E3 <- confusionMatrix[5,3]
 E4 <- confusionMatrix[5,4]
 E5 <- confusionMatrix[5,5]
-dev.off()
-grid.table(confusionMatrix)
+# dev.off()
+# grid.table(confusionMatrix)
 sumOfElements <- A1+A2+A3+A4+A5+B1+B2+B3+B4+B5+C1+C2+C3+C4+C5+D1+D2+D3+D4+D5+E1+E2+E3+E4+E5
 accuracy[5]= (A1+B2+C3+D4+E5)/sumOfElements
 classAccuracy[5,1] = A1/sumOfElements
@@ -344,7 +339,7 @@ classRecall[5,5] = E5/(A1+A2+A3+A4+A5)
 #recall[1] <- A1/(A1+A2+A3+A4+A5)
 #FMeasure[1] <- (2 * ( precision[1] * recall[1])/ ( precision[1] + recall[1] ))
 resultTable = data.frame(methods,accuracy)
-dev.off()
+# dev.off()
 print(resultTable)
 colnames(classAccuracy) <- c("A", "B", "C", "D", "E")
 rownames(classAccuracy) <- c("A", "B", "C", "D", "E")
