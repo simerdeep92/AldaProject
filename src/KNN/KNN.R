@@ -36,6 +36,7 @@ classFmeasure = c()
 avgAccuracy = c()
 avgRecall = c()
 avgPrecision = c()
+avgFmeasure = c()
 
 # through looping k = 7 gives the best accuracy - 
 knn_model = knn(xtrain,xtest,ytrain,k=7,prob=TRUE)
@@ -124,4 +125,8 @@ avgAccuracy[1] = sumAccuracy/5
 avgFmeasure[1] = sumFmeasure/5
 avgRecall[1] = sumRecall/5
 
-accuracy[1]
+print(accuracy)
+print(avgAccuracy)
+print(avgPrecision)
+print(avgRecall)
+print(avgFmeasure)
