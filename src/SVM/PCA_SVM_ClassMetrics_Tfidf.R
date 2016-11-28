@@ -5,10 +5,10 @@ library(gridExtra)
 library(grid)
 
 #csvData <- file.choose()
-csvData <- read.csv("C:\\Users\\Bita\\Desktop\\AldaProject\\AldaProject\\src\\SVM\\output_tfidf.csv", header=T, sep=',')
+csvData <- read.csv("output_tfidf.csv", header=T, sep=',')
 
 #labelData <- file.choose()
-labelData <- read.csv("C:\\Users\\Bita\\Desktop\\AldaProject\\AldaProject\\src\\SVM\\Discussion_Category_Less5_2.csv", header=T, sep=',')
+labelData <- read.csv("Discussion_Category_Less5_2.csv", header=T, sep=',')
 
 labelList <- as.list(as.data.frame(t(labelData)))
 integData <- cbind(csvData, labelData)

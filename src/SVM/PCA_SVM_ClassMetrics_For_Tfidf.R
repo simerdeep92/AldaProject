@@ -112,7 +112,7 @@ for (eachMethod in methods) {
     pred <- predict(quadraticModel, xtestMult)
   }
   confusionMatrix <- matrix(ncol=5, nrow=5)
-  confusionMatrix <- table(pred,ytest)
+  confusionMatrix <- table("Predictions"=pred, Actual=ytest)
   A1 <- confusionMatrix[1,1]
   A2 <- confusionMatrix[1,2]
   A3 <- confusionMatrix[1,3]

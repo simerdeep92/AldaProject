@@ -3,7 +3,7 @@ library(caret)
 library("e1071")
 library("klaR")
 #csvData <- file.choose()
-csvData <- read.csv("output3.csv", header=T, sep=',')
+csvData <- read.csv("output_tfidf.csv", header=T, sep=',')
 
 #labelData <- file.choose()
 labelData <- read.csv("Discussion_Category_Less5_2.csv", header=T, sep=',')
@@ -50,6 +50,18 @@ xtestMult <- xtestMat %*% pRotTest
 xtrainMultData <- as.data.frame(xtrainMult)
 
 method = c("naiveBayes");
+precision = c()
+recall=c()
+FMeasure=c()
+accuracy = c()
+classAccuracy = c()
+classPrecision = c()
+classRecall = c()
+classFmeasure = c()
+avgAccuracy = c()
+avgRecall = c()
+avgPrecision = c()
+avgFmeasure= c()
 #tuneLinear = best.tune(svm,train.x=xtrain, train.y=ytrain,kernel ="linear")
 #print(summary(tuneLinear))
 linearModel <- naiveBayes(ytrain ~., data=xtrainMultData)
@@ -86,3 +98,61 @@ sumOfElements <- A1+A2+A3+A4+A5+B1+B2+B3+B4+B5+C1+C2+C3+C4+C5+D1+D2+D3+D4+D5+E1+
 accuracy = (A1+B2+C3+D4+E5)/sumOfElements
 resultTable = data.frame(method,accuracy)
 print(resultTable)
+
+classAccuracy[1] = A1/sumOfElements
+classAccuracy[2] = B2/sumOfElements
+classAccuracy[3] = C3/sumOfElements
+classAccuracy[4] = D4/sumOfElements
+classAccuracy[5] = E5/sumOfElements
+
+classPrecision[1] = A1/(A1+B1+C1+D1+E1)
+classPrecision[2] = B2/(A2+B2+C2+D2+E2)
+classPrecision[3] = C3/(A3+B3+C3+D3+E3)
+classPrecision[4] = D4/(A4+B4+C4+D4+E4)
+classPrecision[5] = E5/(A5+B5+C5+D5+E5)
+
+classRecall[1] = A1/(A1+A2+A3+A4+A5)
+classRecall[2] = B2/(B1+B2+B3+B4+B5)
+classRecall[3] = C3/(C1+C2+C3+C4+C5)
+classRecall[4] = D4/(D1+D2+D3+D4+D5)
+classRecall[5] = E5/(E1+E2+E3+E4+E5)
+
+classFmeasure[1] <- (2 * ( classPrecision[1] * classRecall[1]) / ( classPrecision[1] + classRecall[1] ))
+classFmeasure[2] <- (2 * ( classPrecision[2] * classRecall[2]) / ( classPrecision[2] + classRecall[2] ))
+classFmeasure[3] <- (2 * ( classPrecision[3] * classRecall[3]) / ( classPrecision[3] + classRecall[3] ))
+classFmeasure[4] <- (2 * ( classPrecision[4] * classRecall[4]) / ( classPrecision[4] + classRecall[4] ))
+classFmeasure[5] <- (2 * ( classPrecision[5] * classRecall[5]) / ( classPrecision[5] + classRecall[5] ))
+print("Acccuracy for K-Nearest Neighbor for k = 7 knn(xtrain,xtest,ytrain,k=7,prob=TRUE)")
+
+for (n in 1:5){
+  if(is.nan(classRecall[n])) {
+    classRecall[n] <- 0
+  }
+  if(is.nan(classPrecision[n])) {
+    classPrecision[n] <- 0
+  }
+  if(is.nan(classFmeasure[n])) {
+    classFmeasure[n] <- 0
+  }
+}
+
+sumPrecision <- 0
+sumRecall <- 0
+sumAccuracy <- 0
+sumFmeasure <- 0
+for(n in 1:5){
+  sumRecall <- sumRecall + classRecall[n]
+  sumAccuracy <- sumAccuracy + classAccuracy[n]
+  sumPrecision <- sumPrecision + classPrecision[n]
+  sumFmeasure <- sumFmeasure + classFmeasure[n]
+}
+avgPrecision[1] = sumPrecision/5
+avgAccuracy[1] = sumAccuracy/5
+avgFmeasure[1] = sumFmeasure/5
+avgRecall[1] = sumRecall/5
+
+print(accuracy)
+print(avgAccuracy)
+print(avgPrecision)
+print(avgRecall)
+print(avgFmeasure)
