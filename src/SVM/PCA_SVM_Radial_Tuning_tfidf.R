@@ -49,16 +49,24 @@ xtestMult <- xtestMat %*% pRotTest
 #tuneRadial = best.tune(svm,train.x=xtrainMult, train.y=ytrain,kernel ="radial")
 #print(summary(tuneRadial))
 maxAccuracy <- .Machine$double.xmin
-c <- .Machine$double.xmin
-g <- .Machine$double.xmin
-for(c in seq(from=-15, to=15, by=0.5)){
-  for(g in seq(from=-15, to=15, by=0.5)){
-    #radialModel <- svm( xtrainMult, ytrain, kernel = "radial", type = 'C', cost = 2^c, gamma = 2^g)
-    linearModel <- svm( xtrainMult, ytrain, kernel = "linear", type = 'C', cost = 2^c, gamma = 2^g)
+accuracy = matrix(nrow=100, ncol=100)
+count <- 0
+i <- 0
+j <- 0
+# c <- .Machine$double.xmin
+# g <- .Machine$double.xmin
+for(c in seq(from=-5, to=5, by=0.5)){
+  i <- i + 1
+  j <- 0
+  for(g in seq(from=-5, to=5, by=0.5)){
+    j <- j + 1
+    count <- count + 1
+    radialModel <- svm( xtrainMult, ytrain, kernel = "radial", type = 'C', cost = 2^c, gamma = 2^g)
+    #linearModel <- svm( xtrainMult, ytrain, kernel = "linear", type = 'C', cost = 2^c, gamma = 2^g)
     #polynomialModel <- svm( xtrainMult, ytrain, kernel = "polynomial", type = 'C', degree = 3, cost = 2^c, gamma = 2^g)
     #sigmoidModel <- svm( xtrainMult, ytrain, kernel = "sigmoid", type = 'C', cost = 2^c, gamma = 2^g)
     
-    predRadial <- predict(linearModel,xtestMult)
+    predRadial <- predict(radialModel,xtestMult)
     confusionMatrix <- table(predRadial,ytest)
     A1 <- confusionMatrix[1,1]
     A2 <- confusionMatrix[1,2]
@@ -87,15 +95,14 @@ for(c in seq(from=-15, to=15, by=0.5)){
     E5 <- confusionMatrix[5,5]
     
     sumOfElements <- A1+A2+A3+A4+A5+B1+B2+B3+B4+B5+C1+C2+C3+C4+C5+D1+D2+D3+D4+D5+E1+E2+E3+E4+E5
-    accuracy = (A1+B2+C3+D4+E5)/sumOfElements
-    if(accuracy > maxAccuracy) {
+    accuracy[i,j] = (A1+B2+C3+D4+E5)/sumOfElements
+    if(accuracy[i,j] > maxAccuracy) {
       maxC = c
       maxG = g
-      maxAccuracy = accuracy
+      maxAccuracy = accuracy[i,j]
     }
   }
 }
 print(maxC)
 print(maxG)
 print(maxAccuracy)
-# write.csv(confusionMatrix, file="CM_Radial.csv")

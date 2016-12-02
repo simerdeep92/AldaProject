@@ -25,11 +25,11 @@ ytrain = trainingData[,numOfCols+1]
 ###########PCA#######
 #xtrainT <- t(xtrain)
 #p <- prcomp(xtrain, retx=TRUE, center=TRUE, scale=TRUE)
-p <- prcomp(xtrain)
+pr <- prcomp(xtrain)
 
 # Choosing 6 dimesions after experimenting in PCA_SVM_ClassMetrics_Test.R
 i <- 6
-pRot <- (p$rotation[,1:i])
+pRot <- (pr$rotation[,1:i])
 
 xtrainMat <- data.matrix(xtrain)
 xtrainMult <- xtrainMat %*% pRot
@@ -217,3 +217,4 @@ resultTableAvgAccuracy = data.frame(methods, avgAccuracy)
 resultTableAvgRecall = data.frame(methods, avgRecall)
 resultTableAvgFmeasure = data.frame(methods, avgFmeasure)
 resultTableAvgPrecision = data.frame(methods, avgPrecision)
+print(resultTable)
